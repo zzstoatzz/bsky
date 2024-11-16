@@ -1,0 +1,10 @@
+[project]
+name = "bsky"
+version = "0.1.0"
+description = "basic client for bsky"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = ["atproto", "pydantic-settings", "textual"]
+
+[project.optional-dependencies]
+dev = ["ipython"]

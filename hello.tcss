@@ -1,0 +1,43 @@
+#main {
+    height: 1fr;
+    margin: 1 2;
+}
+
+#posts_container {
+    height: 100%;
+    border: solid $accent;
+    padding: 1 2;
+    overflow-y: scroll;
+}
+
+PostWidget {
+    margin: 0 0 1 0;
+    padding: 1;
+    background: $surface;
+    width: 100%;
+}
+
+/* Your posts */
+PostWidget.my-post {
+    border-left: heavy $success;
+}
+
+/* Other people's posts */
+PostWidget.other-post {
+    border-left: solid $panel;
+}
+
+/* Replies */
+PostWidget.reply {
+    border-right: solid $warning;
+}
+
+/* Hover state */
+PostWidget:hover {
+    background: $primary-darken-2;
+}
+
+/* Content styling */
+PostWidget Static {
+    padding: 0 1;
+} 
