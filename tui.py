@@ -99,7 +99,7 @@ class SocialStats(Static):
 class BlueskyApp(App):
     """A Textual app to display Bluesky posts."""
 
-    CSS_PATH = "hello.tcss"
+    CSS_PATH = "bskytui.tcss"
     TITLE = "Bluesky Posts"
 
     BINDINGS = [
