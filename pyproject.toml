@@ -8,5 +8,8 @@ version = "0.1.0"
 requires-python = ">=3.12"
 dependencies = ["atproto", "textual", "pydantic-settings"]
 
+[project.scripts]
+bskytui = "bskytui.app:main"
+
 [tool.hatch.metadata]
 allow-direct-references = true
