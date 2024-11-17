@@ -1,12 +1,16 @@
 #main {
     height: 100%;
-    padding: 1;
+    overflow: hidden;
+    layout: vertical;
 }
 
 #posts_container {
     height: 100%;
     width: 100%;
-    overflow-y: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 1;
+    padding-bottom: 2;
 }
 
 /* Post styling */
@@ -87,4 +91,26 @@ Button {
 
 Button.error {
     background: $error;
+}
+
+#load_more {
+    margin: 1 1 2 1;
+    width: 100%;
+    background: $primary;
+    border: tall $primary;
+    padding: 1;
+    content-align: center middle;
+    height: auto;
+    transition: background 200ms linear, border 200ms linear;
+}
+
+#load_more:hover {
+    background: $primary-darken-1;
+    border: tall $primary-lighten-1;
+}
+
+#load_more:disabled {
+    background: $primary-darken-3;
+    border: tall $primary;
+    color: $text 50%;
 } 
