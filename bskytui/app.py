@@ -183,6 +183,10 @@ class DeleteConfirmScreen(ModalScreen[bool]):
             self.dismiss(False)
 
 
-if __name__ == "__main__":
+def main():
     app = BlueskyApp()
     app.run()
+
+
+if __name__ == "__main__":
+    main()
