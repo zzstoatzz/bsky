@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 from textual.app import App, ComposeResult
 from textual.binding import Binding
 from textual.containers import Container, ScrollableContainer
@@ -78,8 +80,34 @@ class BlueskyApp(App):
             else self.service.get_author_feed()
         )
 
+        # Group posts by parent
+        post_map = {}  # uri -> post
+        reply_map = defaultdict(list)  # parent_uri -> [child_posts]
+
         for post in posts:
-            posts_container.mount(PostWidget(post, self.service.profile.handle))
+            post_map[post.post.uri] = post
+            if hasattr(post.post.record, "reply") and post.post.record.reply:
+                parent_uri = post.post.record.reply.parent.uri
+                reply_map[parent_uri].append(post)
+
+        # Mount posts in order, with replies nested
+        for post in posts:
+            if not (hasattr(post.post.record, "reply") and post.post.record.reply):
+                # This is a top-level post
+                posts_container.mount(PostWidget(post, self.service.profile.handle))
+                # Mount any replies to this post
+                for reply in reply_map.get(post.post.uri, []):
+                    posts_container.mount(
+                        PostWidget(reply, self.service.profile.handle)
+                    )
+
+    def delete_post(self, post_uri: str, post_widget: PostWidget) -> None:
+        """Delete a post and remove it from the UI if successful."""
+        if self.service.delete_post(post_uri):
+            post_widget.remove()
+            self.notify("Post deleted successfully", severity="information")
+        else:
+            self.notify("Failed to delete post", severity="error")
 
 
 if __name__ == "__main__":

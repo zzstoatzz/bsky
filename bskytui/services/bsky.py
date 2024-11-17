@@ -61,3 +61,27 @@ class BlueskyService:
             sleep(0.5)
 
         return follows
+
+    def delete_post(self, rkey: str) -> bool:
+        """Delete a post by its record key.
+
+        Args:
+            rkey: The record key of the post to delete
+
+        Returns:
+            bool: True if deletion was successful, False otherwise
+        """
+        try:
+            self.client.app.bsky.feed.delete_post({"rkey": rkey})
+            return True
+        except Exception as e:
+            print(f"Failed to delete post: {e}")  # For debugging
+            return False
+
+    def get_profile_by_did(self, did: str) -> str:
+        """Get a user's handle from their DID."""
+        try:
+            profile = self.client.app.bsky.actor.get_profile({"actor": did})
+            return profile.handle
+        except Exception:
+            return "someone"
