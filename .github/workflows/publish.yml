@@ -5,11 +5,9 @@
 name: "Publish to PyPI"
 
 on:
-  workflow_call:
-    inputs:
-      plan:
-        required: true
-        type: string
+  release:
+    types: [published]
+  workflow_dispatch:
 
 jobs:
   pypi-publish:
