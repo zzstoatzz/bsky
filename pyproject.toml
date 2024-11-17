@@ -1,10 +1,12 @@
-[project]
-name = "bsky"
-version = "0.1.0"
-description = "basic client for bsky"
-readme = "README.md"
-requires-python = ">=3.12"
-dependencies = ["atproto", "pydantic-settings", "textual"]
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[project.optional-dependencies]
-dev = ["ipython"]
+[project]
+name = "bskytui"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = ["atproto", "textual", "pydantic-settings"]
+
+[tool.hatch.metadata]
+allow-direct-references = true

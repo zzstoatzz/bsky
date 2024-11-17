@@ -11,5 +11,5 @@ then run (or the whole pip thing if you're not using uv):
 git clone https://github.com/zzstoatzz/bsky
 cd bsky
 uv sync
-uv run tui.py
+uv run bskytui/app.py
 ```
