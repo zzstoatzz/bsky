@@ -18,15 +18,25 @@ class BlueskyService:
         self.client = Client()
         self.profile = self.client.login(settings.bsky_handle, settings.bsky_password)
 
-    def get_timeline(self) -> List:
-        """Get main timeline feed."""
-        return self.client.app.bsky.feed.get_timeline().feed
+    def get_timeline(self, cursor: str | None = None) -> tuple[List, str | None]:
+        """Get main timeline feed.
 
-    def get_author_feed(self) -> List:
-        """Get authenticated user's posts."""
-        return self.client.app.bsky.feed.get_author_feed(
-            {"actor": self.profile.did}
-        ).feed
+        Returns:
+            Tuple of (posts, cursor)
+        """
+        response = self.client.app.bsky.feed.get_timeline({"cursor": cursor})
+        return response.feed, response.cursor
+
+    def get_author_feed(self, cursor: str | None = None) -> tuple[List, str | None]:
+        """Get authenticated user's posts.
+
+        Returns:
+            Tuple of (posts, cursor)
+        """
+        response = self.client.app.bsky.feed.get_author_feed(
+            {"actor": self.profile.did, "cursor": cursor}
+        )
+        return response.feed, response.cursor
 
     def get_profile_stats(self) -> dict:
         """Get user profile statistics."""
@@ -61,3 +71,27 @@ class BlueskyService:
             sleep(0.5)
 
         return follows
+
+    def delete_post(self, rkey: str) -> bool:
+        """Delete a post by its record key.
+
+        Args:
+            rkey: The record key of the post to delete
+
+        Returns:
+            bool: True if deletion was successful, False otherwise
+        """
+        try:
+            self.client.app.bsky.feed.delete_post({"rkey": rkey})
+            return True
+        except Exception as e:
+            print(f"Failed to delete post: {e}")  # For debugging
+            return False
+
+    def get_profile_by_did(self, did: str) -> str:
+        """Get a user's handle from their DID."""
+        try:
+            profile = self.client.app.bsky.actor.get_profile({"actor": did})
+            return profile.handle
+        except Exception:
+            return "someone"

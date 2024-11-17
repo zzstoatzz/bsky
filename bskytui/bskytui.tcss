@@ -1,39 +1,57 @@
 #main {
     height: 100%;
-    padding: 1;
+    overflow: hidden;
+    layout: vertical;
 }
 
 #posts_container {
     height: 100%;
     width: 100%;
-    overflow-y: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 1;
+    padding-bottom: 2;
 }
 
 /* Post styling */
 .my-post, .other-post {
-    padding: 1 1;
-    margin: 0 0 1 0;
+    padding: 0 1;
+    margin-bottom: 1;
     width: 100%;
     border: tall transparent;
     transition: background 200ms linear, border 200ms linear;
 }
 
-/* Hover effects */
-.my-post:hover {
-    background: $accent 10%;
-    border: tall $accent;
+.post-header {
+    width: 100%;
+    padding: 0;
+    margin: 0;
 }
 
-.other-post:hover {
-    background: $primary 10%;
-    border: tall $primary;
+/* Delete button styling */
+.delete-btn {
+    align-horizontal: right;
+    width: 3;
+    height: 1;
+    margin-top: -3;
+    margin-right: 1;
+    background: $error;
 }
 
-/* Different styling for your posts vs others */
+.delete-btn:hover {
+    opacity: 1.0;
+}
+
+/* Post type styles */
 .my-post {
     background: $boost;
     border-left: thick $accent;
     padding-left: 2;
+}
+
+.my-post:hover {
+    background: $accent 10%;
+    border: tall $accent;
 }
 
 .other-post {
@@ -42,9 +60,16 @@
     padding-left: 2;
 }
 
+.other-post:hover {
+    background: $primary 10%;
+    border: tall $primary;
+}
+
 .reply {
-    margin-left: 2;
-    border-left: double $accent;
+    margin-left: 4;
+    padding-left: 1;
+    border-left: heavy $primary-darken-2;
+    width: 96%;
 }
 
 /* Stats bar at top */
@@ -53,4 +78,39 @@
     background: $boost;
     border-bottom: heavy $primary;
     text-align: center;
+}
+
+.post-actions {
+    margin-top: 1;
+    align-horizontal: right;
+}
+
+Button {
+    margin-right: 1;
+}
+
+Button.error {
+    background: $error;
+}
+
+#load_more {
+    margin: 1 1 2 1;
+    width: 100%;
+    background: $primary;
+    border: tall $primary;
+    padding: 1;
+    content-align: center middle;
+    height: auto;
+    transition: background 200ms linear, border 200ms linear;
+}
+
+#load_more:hover {
+    background: $primary-darken-1;
+    border: tall $primary-lighten-1;
+}
+
+#load_more:disabled {
+    background: $primary-darken-3;
+    border: tall $primary;
+    color: $text 50%;
 } 
