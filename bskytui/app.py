@@ -2,8 +2,9 @@ from collections import defaultdict
 
 from textual.app import App, ComposeResult
 from textual.binding import Binding
-from textual.containers import Container, ScrollableContainer
-from textual.widgets import Button, Footer, Header, Static
+from textual.containers import Container, Horizontal, ScrollableContainer
+from textual.screen import ModalScreen
+from textual.widgets import Button, Footer, Header, Input, Label, Static
 
 from bskytui.services.bsky import BlueskyService
 from bskytui.widgets.post import PostWidget
@@ -114,13 +115,15 @@ class BlueskyApp(App):
 
     async def action_show_timeline(self) -> None:
         self.current_view = "timeline"
+        self.current_cursor = None
         self.update_stats()
-        await self.refresh_posts()
+        await self.load_posts(initial=True)
 
     async def action_show_my_posts(self) -> None:
         self.current_view = "my_posts"
+        self.current_cursor = None
         self.update_stats()
-        await self.refresh_posts()
+        await self.load_posts(initial=True)
 
     async def action_refresh(self) -> None:
         await self.refresh_posts()
@@ -130,13 +133,54 @@ class BlueskyApp(App):
         posts_container.remove_children()
         await self.load_posts()
 
-    def delete_post(self, post_uri: str, post_widget: PostWidget) -> None:
-        """Delete a post and remove it from the UI if successful."""
-        if self.service.delete_post(post_uri):
-            post_widget.remove()
-            self.notify("Post deleted successfully", severity="information")
+    async def delete_post(self, post_uri: str, post_widget: PostWidget) -> None:
+        """Delete a post with confirmation."""
+        # Show confirmation screen
+        confirm_screen = DeleteConfirmScreen(
+            post_widget.post_data.post.record.text[:100] + "..."
+        )
+        confirmed = await self.push_screen(confirm_screen)
+
+        if confirmed:
+            if self.service.delete_post(post_uri):
+                await post_widget.remove()
+                self.notify("Post deleted successfully", severity="information")
+            else:
+                self.notify("Failed to delete post", severity="error")
+
+
+class DeleteConfirmScreen(ModalScreen[bool]):
+    """Modal screen for delete confirmation."""
+
+    def __init__(self, post_text: str):
+        super().__init__()
+        self.post_text = post_text
+
+    def compose(self) -> ComposeResult:
+        yield Container(
+            Label("🚨 Dangerous Operation 🚨"),
+            Label(f"You're about to delete:\n{self.post_text}"),
+            Label("\nType 'rm -rf' to confirm:"),
+            Input(id="confirm_input", placeholder="think carefully..."),
+            Horizontal(
+                Button("Cancel", variant="primary", id="cancel"),
+                Button("Delete", variant="error", id="delete", disabled=True),
+                id="actions",
+            ),
+            id="delete_dialog",
+        )
+
+    def on_input_changed(self, event: Input.Changed) -> None:
+        """Enable delete button only if correct confirmation is typed."""
+        delete_btn = self.query_one("#delete", Button)
+        delete_btn.disabled = event.value != "rm -rf"
+
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        """Handle button presses."""
+        if event.button.id == "delete":
+            self.dismiss(True)
         else:
-            self.notify("Failed to delete post", severity="error")
+            self.dismiss(False)
 
 
 if __name__ == "__main__":

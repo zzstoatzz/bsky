@@ -40,14 +40,9 @@ class PostWidget(Static):
 
         yield Static(content, classes=" ".join(classes))
         if is_my_post:
-            yield Button(
-                "🗑️",
-                variant="error",
-                id=f"delete-{self.post_rkey}",
-                classes="delete-btn",
-            )
+            yield Button("🗑️", id=f"delete-{self.post_rkey}", classes="delete-btn")
 
-    def _build_header(self, post, author: str, created_at: str) -> str:
+    def _build_header(self, post, author, created_at) -> str:
         reply_info = self._get_reply_info(post)
         if reply_info:
             return f"[b]{created_at}[/b]\n↩️ {reply_info}"
