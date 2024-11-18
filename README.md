@@ -1,5 +1,8 @@
 # demo bsky tui
 
+> [!NOTE]
+> This project is under development and requires using [uv](https://docs.astral.sh/uv/getting-started/) (you should anyways 🙂)
+
 set the following environment variables (export or `.env` file):
 ```
 export BSKY_HANDLE=your_handle.bsky.social
