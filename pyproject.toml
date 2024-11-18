@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "bskytui"
-version = "0.0.1-alpha.1"
+version = "0.0.1-alpha.2"
 description = "an incomplete Bluesky TUI client (using textual)"
 readme = "README.md"
 
@@ -41,9 +41,7 @@ format.quote-style = "single"
 target-version = "py310"
 
 [tool.uv]
-dev-dependencies = [
-    "bskytui",
-]
+dev-dependencies = ["bskytui"]
 
 [tool.uv.sources]
 bskytui = { workspace = true }
