@@ -1,4 +1,4 @@
-# demo bsky tui
+## `bskytui`
 
 > [!NOTE]
 > This project is under development and requires using python 3.12+ and [uv](https://docs.astral.sh/uv/getting-started/) (you should use uv anyways 🙂)
