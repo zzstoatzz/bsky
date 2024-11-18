@@ -1,7 +1,7 @@
 # demo bsky tui
 
 > [!NOTE]
-> This project is under development and requires using [uv](https://docs.astral.sh/uv/getting-started/) (you should anyways 🙂)
+> This project is under development and requires using python 3.12+ and [uv](https://docs.astral.sh/uv/getting-started/) (you should use uv anyways 🙂)
 
 set the following environment variables (export or `.env` file):
 ```
