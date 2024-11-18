@@ -15,29 +15,28 @@
 
 /* Post styling */
 .my-post, .other-post {
-    padding: 0 1;
-    margin-bottom: 1;
     width: 100%;
+    margin-bottom: 1;
+    padding: 1 2;
     border: tall transparent;
     transition: background 200ms linear, border 200ms linear;
+    text-align: left;
 }
 
-/* Post type styles */
 .my-post {
     background: $boost;
     border-left: thick $accent;
-    padding: 1 2;
 }
 
 .my-post:hover {
     background: $accent 10%;
     border: tall $accent;
+    color: $error;  /* Show delete intent on hover */
 }
 
 .other-post {
     background: $surface;
     border-left: thick $primary;
-    padding-left: 2;
 }
 
 .other-post:hover {
@@ -51,94 +50,3 @@
     border-left: heavy $primary-darken-2;
     width: 96%;
 }
-
-/* Delete button styling */
-.delete-btn {
-    background: transparent;
-    color: $text;
-    border: none;
-    width: 4;
-    height: 3;
-    margin-top: 1;
-    margin-right: 1;
-    opacity: 0;
-    transition: opacity 200ms linear;
-    align: right top;
-}
-
-.my-post:hover .delete-btn {
-    opacity: 1;
-}
-
-.delete-btn:hover {
-    color: $error;
-}
-
-/* Stats bar at top */
-#stats {
-    padding: 1 2;
-    background: $boost;
-    border-bottom: heavy $primary;
-    text-align: center;
-}
-
-Button {
-    margin-right: 1;
-}
-
-Button.error {
-    background: $error;
-}
-
-#load_more {
-    margin: 1 1 2 1;
-    width: 100%;
-    background: $primary;
-    border: tall $primary;
-    padding: 1;
-    content-align: center middle;
-    height: auto;
-    transition: background 200ms linear, border 200ms linear;
-}
-
-#load_more:hover {
-    background: $primary-darken-1;
-    border: tall $primary-lighten-1;
-}
-
-#load_more:disabled {
-    background: $primary-darken-3;
-    border: tall $primary;
-    color: $text 50%;
-}
-
-/* Delete confirmation modal */
-#delete_dialog {
-    background: $surface;
-    padding: 2;
-    border: tall $primary;
-    min-width: 60;
-    min-height: 20;
-    align: center middle;
-    layout: vertical;
-    grid-size: 2;
-    grid-gutter: 1;
-}
-
-#delete_dialog Label {
-    text-align: center;
-    width: 100%;
-    margin-bottom: 1;
-}
-
-#delete_dialog #confirm_input {
-    width: 100%;
-    margin: 1 0;
-}
-
-#delete_dialog #actions {
-    width: 100%;
-    height: auto;
-    align-horizontal: center;
-    margin-top: 1;
-} 

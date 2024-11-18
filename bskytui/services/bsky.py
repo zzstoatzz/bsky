@@ -1,6 +1,5 @@
 from collections import defaultdict
 from time import sleep
-from typing import Dict, List
 
 from atproto import Client
 
@@ -18,35 +17,33 @@ class BlueskyService:
         self.client = Client()
         self.profile = self.client.login(settings.bsky_handle, settings.bsky_password)
 
-    def get_timeline(self, cursor: str | None = None) -> tuple[List, str | None]:
+    def get_timeline(self, cursor: str | None = None) -> tuple[list, str | None]:
         """Get main timeline feed.
 
         Returns:
             Tuple of (posts, cursor)
         """
-        response = self.client.app.bsky.feed.get_timeline({"cursor": cursor})
+        response = self.client.app.bsky.feed.get_timeline({'cursor': cursor})
         return response.feed, response.cursor
 
-    def get_author_feed(self, cursor: str | None = None) -> tuple[List, str | None]:
+    def get_author_feed(self, cursor: str | None = None) -> tuple[list, str | None]:
         """Get authenticated user's posts.
 
         Returns:
             Tuple of (posts, cursor)
         """
-        response = self.client.app.bsky.feed.get_author_feed(
-            {"actor": self.profile.did, "cursor": cursor}
-        )
+        response = self.client.app.bsky.feed.get_author_feed({'actor': self.profile.did, 'cursor': cursor})
         return response.feed, response.cursor
 
     def get_profile_stats(self) -> dict:
         """Get user profile statistics."""
-        profile = self.client.app.bsky.actor.get_profile({"actor": self.profile.handle})
+        profile = self.client.app.bsky.actor.get_profile({'actor': self.profile.handle})
         return {
-            "followers_count": profile.followers_count,
-            "follows_count": profile.follows_count,
+            'followers_count': profile.followers_count,
+            'follows_count': profile.follows_count,
         }
 
-    def get_follows(self, limit: int = 100) -> Dict:
+    def get_follows(self, limit: int = 100) -> dict:
         """Get accounts the user follows."""
         follows = defaultdict(str)
         cursor = None
@@ -60,8 +57,8 @@ class BlueskyService:
 
             for follow in response.follows:
                 follows[follow.did] = {
-                    "handle": follow.handle,
-                    "created_at": follow.created_at,
+                    'handle': follow.handle,
+                    'created_at': follow.created_at,
                 }
 
             if len(follows) >= limit or not response.cursor:
@@ -72,26 +69,26 @@ class BlueskyService:
 
         return follows
 
-    def delete_post(self, rkey: str) -> bool:
-        """Delete a post by its record key.
-
-        Args:
-            rkey: The record key of the post to delete
-
-        Returns:
-            bool: True if deletion was successful, False otherwise
-        """
+    def delete_post(self, post_uri: str) -> bool:
+        """Delete a post by its URI."""
         try:
-            self.client.app.bsky.feed.delete_post({"rkey": rkey})
+            # Extract the rkey (post ID) from the URI
+            rkey = post_uri.split('/')[-1]
+
+            # The actual deletion call
+            response = self.client.com.atproto.repo.delete_record(
+                {'repo': self.profile.did, 'collection': 'app.bsky.feed.post', 'rkey': rkey}
+            )
             return True
+
         except Exception as e:
-            print(f"Failed to delete post: {e}")  # For debugging
+            print(f'Failed to delete post: {e}')  # Keep basic error logging
             return False
 
     def get_profile_by_did(self, did: str) -> str:
         """Get a user's handle from their DID."""
         try:
-            profile = self.client.app.bsky.actor.get_profile({"actor": did})
+            profile = self.client.app.bsky.actor.get_profile({'actor': did})
             return profile.handle
         except Exception:
-            return "someone"
+            return 'someone'
