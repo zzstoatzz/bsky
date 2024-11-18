@@ -11,13 +11,32 @@ export BSKY_PASSWORD=your_password
 
 ## Run directly (no installation needed)
 ```bash
-uvx bskytui
+uv bskytui
 ```
 
-## Or clone and run locally
+## Run in docker ()
+```bash
+docker run --rm -it --env-file .env ghcr.io/astral-sh/uv:python3.13-bookworm-slim uvx bskytui
+```
+
+
+## Install and run in a virtual environment
+```bash
+uv venv && source .venv/bin/activate
+uv pip install bskytui
+uv run bskytui
+```
+
+## Or clone (for development) and run
 ```bash
 git clone https://github.com/zzstoatzz/bsky
 cd bsky
-uv sync
-uv run bskytui/app.py
+uv run bskytui
+```
+
+## Development
+```bash
+# Install dev dependencies and run with hot reload
+uv pip install -e ".[dev]"
+uv run scripts/dev.py
 ```

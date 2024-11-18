@@ -4,13 +4,46 @@ build-backend = "hatchling.build"
 
 [project]
 name = "bskytui"
-version = "0.0.1-alpha.0"
-requires-python = ">=3.12"
-dependencies = ["atproto", "textual", "pydantic-settings"]
+version = "0.0.1-alpha.1"
+description = "an incomplete Bluesky TUI client (using textual)"
 readme = "README.md"
 
+requires-python = ">=3.12"
+dependencies = [
+    "atproto>=0.0.55",
+    "textual>=0.86.1",
+    "pydantic-settings>=2.6.1",
+]
+
+[project.optional-dependencies]
+dev = ["pre-commit>=4.0.1", "ruff>=0.7.4"]
+
 [project.scripts]
-bskytui = "bskytui.app:main"
+bskytui = "bskytui.main:app"
+
+[project.urls]
+Homepage = "https://github.com/zzstoatzz/bsky"
+Funding = "https://github.com/sponsors/zzstoatzz"
+Source = "https://github.com/zzstoatzz/bsky"
+Changelog = "https://github.com/zzstoatzz/bsky/releases"
 
 [tool.hatch.metadata]
 allow-direct-references = true
+
+[tool.ruff]
+line-length = 120
+lint.extend-select = ["Q", "RUF100", "C90", "UP", "I"]
+lint.ignore = ["E721"]
+lint.flake8-quotes = { inline-quotes = "single", multiline-quotes = "double" }
+lint.mccabe = { max-complexity = 14 }
+lint.pydocstyle = { convention = "google" }
+format.quote-style = "single"
+target-version = "py310"
+
+[tool.uv]
+dev-dependencies = [
+    "bskytui",
+]
+
+[tool.uv.sources]
+bskytui = { workspace = true }
