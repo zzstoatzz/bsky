@@ -11,7 +11,7 @@ export BSKY_PASSWORD=your_password
 
 ## Run directly (no installation needed)
 ```bash
-uv bskytui
+uvx bskytui
 ```
 
 ## Run in docker ()
@@ -38,5 +38,5 @@ uv run bskytui
 ```bash
 # Install dev dependencies and run with hot reload
 uv pip install -e ".[dev]"
-uv run scripts/dev.py
+uv run bskytui
 ```
